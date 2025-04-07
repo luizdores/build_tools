@@ -534,17 +534,20 @@ def git_is_ssh():
 
 def get_ssh_base_url():
   cur_origin = git_get_origin()
-  ind = cur_origin.find(":ONLYOFFICE/")
+  ind = cur_origin.find(":luizdores/")
   if (ind == -1):
-    return "git@github.com:ONLYOFFICE/"
+    return "git@github.com:luizdores/"
   return cur_origin[:ind+12]
 
 def git_update(repo, is_no_errors=False, is_current_dir=False, git_owner=""):
   print("[git] update: " + repo)
-  owner = git_owner if git_owner else "ONLYOFFICE"
-  url = "https://github.com/" + owner + "/" + repo + ".git"
-  if git_is_ssh():
-    url = get_ssh_base_url() + repo + ".git"
+  url = "https://github.com/ONLYOFFICE/" + repo + ".git"
+  if (repo == "server"):
+    url = "https://github.com/luizdores/" + repo + ".git"
+  if config.option("git-protocol") == "ssh":
+    url = "git@github.com:ONLYOFFICE/" + repo + ".git"
+    if (repo == "server"):
+      url = "git@github.com:luizdores/" + repo + ".git"
   folder = get_script_dir() + "/../../" + repo
   if is_current_dir:
     folder = repo
